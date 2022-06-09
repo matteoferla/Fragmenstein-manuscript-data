@@ -1,0 +1,32 @@
+COMPND    hit1
+HETATM    1  N   GZY A 303      35.458 -41.689  76.323  1.00 40.64           N  
+HETATM    2  C   GZY A 303      36.564 -40.606  78.147  1.00 34.92           C  
+HETATM    3  O   GZY A 303      36.820 -42.878  77.704  1.00 38.87           O  
+HETATM    4  C1  GZY A 303      36.212 -41.711  77.420  1.00 38.84           C  
+HETATM    5  O1  GZY A 303      39.098 -43.747  73.312  1.00 42.41           O  
+HETATM    6  C2  GZY A 303      35.191 -40.515  75.500  1.00 45.27           C  
+HETATM    7  C3  GZY A 303      34.412 -41.043  74.297  1.00 45.97           C  
+HETATM    8  C4  GZY A 303      33.815 -42.351  74.762  1.00 45.87           C  
+HETATM    9  C5  GZY A 303      34.857 -42.913  75.726  1.00 45.95           C  
+HETATM   10  C6  GZY A 303      35.789 -43.776  74.924  1.00 44.33           C  
+HETATM   11  C7  GZY A 303      35.406 -45.078  74.569  1.00 43.97           C  
+HETATM   12  C8  GZY A 303      36.235 -45.900  73.801  1.00 41.44           C  
+HETATM   13  C9  GZY A 303      37.481 -45.467  73.375  1.00 40.30           C  
+HETATM   14  C10 GZY A 303      37.873 -44.177  73.717  1.00 43.72           C  
+HETATM   15  C11 GZY A 303      39.933 -43.146  74.283  1.00 39.16           C  
+HETATM   16  C12 GZY A 303      37.039 -43.330  74.485  1.00 45.59           C  
+ATOM     17 CONNACYS A  73      37.968 -39.815  77.564  0.70 31.04           *  
+CONECT    1    4    6    9
+CONECT    2    4   17
+CONECT    3    4    4
+CONECT    5   14   15
+CONECT    6    7
+CONECT    7    8
+CONECT    8    9
+CONECT    9   10
+CONECT   10   11   11   16
+CONECT   11   12
+CONECT   12   13   13
+CONECT   13   14
+CONECT   14   16   16
+END
