@@ -16,7 +16,7 @@ In the deposition group G_1002045 are several molecules (see [NUDT7 notes](NUDT7
 The JACS paper calls `NUOOA000181` `NUDT7-REV-1`, while the ChemMedChem paper calls it `NU181`.
 This was merged with `PCM-0102716` to make `NUDT7-COV-1`/`NU443` in the JACS paper.
 
-![NUDT7](NUDT7/NUDT7-COV-1.png)
+![NUDT7](NUDT7/NUDT7_NU443.png)
 _Comparison of crystallised and placed followup from NUDT7 targets._
 
 The two hits NU181 (in lavender, LHS) and PCM0102716 (puce, LHS) were merged in <paper> yielding the merger NU443.
