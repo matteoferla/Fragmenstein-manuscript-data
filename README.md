@@ -7,10 +7,16 @@ This folder contains code to make the figures.
 It is not intended for greater dissemination.
 
 
-## Placement of examples
+### Placement of examples
+> See TBA
+> 
+**Figure 1.** Merging effects based on position.
+![xxx](this_file_does_not_exist.png)
+
+**Figure S1.** Example merger with purchasability issue
+![xxx](this_file_does_not_exist.png)
 
 ### NUDT7
-
 > See [NUDT7 notes](NUDT7/README.md).
 
 In the deposition group G_1002045 are several molecules.
@@ -18,6 +24,7 @@ In the deposition group G_1002045 are several molecules.
 The JACS paper calls `NUOOA000181` `NUDT7-REV-1`, while the ChemMedChem paper calls it `NU181`.
 This was merged with `PCM-0102716` to make `NUDT7-COV-1`/`NU443` in the JACS paper.
 
+**Figure 2.** Comparison of crystallised and placed followup from NUDT7 targets
 ![NUDT7](NUDT7_NU443.png)
 _Comparison of crystallised and placed followup from NUDT7 targets._
 
@@ -40,10 +47,14 @@ while in NU442 it is .9 Å away.
 but this is far from a smoking gun to explain why it did not react.
 The RMSD against the hits went from 0.6 Å to 0.9 Å.
 
+**Figure S2.** Placement of 442.
+![xxx](this_file_does_not_exist.png)
+
 ## Moonshot placement
 
-> See [moonshot notes](moonshot/README.md)).
+> See [moonshot notes](moonshot/README.md).
 
+**Figure 3.** Accuracy of placement of COVID19 MPro1 Moonshot compounds.
 ![moonshot](moonshot_placement_comparison.png)
 
 Accuracy of placement of COVID19 MPro1 Moonshot compounds. 
@@ -65,7 +76,7 @@ In fact, as the plot is done without any massaging bar for the inspiration clean
 As a result there are ostensibly 4 hits which are incorrect by 6+ Å in the Fragmenstein placement,
 because the followup was interpreted the wrong way round.
 
-## Color names
+## Footnote: consistent color names
 The colours at present are the divergent colo(u)r of Fragmenstein as found in `fragmenstein.branding.divergent_colors`.
 The primary colour is <span style="color:#AED882;">#AED882, feijoa</span>, but I'll call it green.
 As they are divergent colours, they are not quite the same as crayola colours.
