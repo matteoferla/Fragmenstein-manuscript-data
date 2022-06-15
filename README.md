@@ -6,6 +6,8 @@ Analyses and figures for the Fragmenstein manuscript (to be revealed later).
 This folder contains code to make the figures.
 It is not intended for greater dissemination.
 
+For Fragmenstein itself see [repo](https://github.com/matteoferla/Fragmenstein).
+
 
 ### Placement of examples
 > See TBA
