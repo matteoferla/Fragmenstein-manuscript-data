@@ -11,7 +11,9 @@ It is not intended for greater dissemination.
 
 ### NUDT7
 
-In the deposition group G_1002045 are several molecules (see [NUDT7 notes](NUDT7/README.md)).
+> See [NUDT7 notes](NUDT7/README.md).
+
+In the deposition group G_1002045 are several molecules.
 
 The JACS paper calls `NUOOA000181` `NUDT7-REV-1`, while the ChemMedChem paper calls it `NU181`.
 This was merged with `PCM-0102716` to make `NUDT7-COV-1`/`NU443` in the JACS paper.
@@ -37,6 +39,31 @@ and the SG atom in NU443 is only .3 Å away from where it is in PCM-0102716,
 while in NU442 it is .9 Å away.
 but this is far from a smoking gun to explain why it did not react.
 The RMSD against the hits went from 0.6 Å to 0.9 Å.
+
+## Moonshot placement
+
+> See [moonshot notes](moonshot/README.md)).
+
+![moonshot](moonshot_placement_comparison.png)
+
+Accuracy of placement of COVID19 MPro1 Moonshot compounds. 
+Followup compounds in the COVID19 MPro1 Moonshot project which had a stated inspiration (manually adjusted) 
+were placed with Fragmenstein and docked with rDock either freely or with pharmacophore constraints. 
+The initial dataset contained 100 fragment-inspired compounds, but 23 were discarded 
+(because the crystal structure of followup had no overlapping atoms with the inspiration, 
+the reactive followup was non-covalent in the crystal structure 
+and/or Fragmenstein failed to minimise the followup compound) 
+and a further 20 were discarded in the pharmacophore constrained rDock due to failure to dock successfully.
+Green rectangle is the region where the RMSD is less than 1 Å.
+
+The crystallised moonshot compounds are highly heterogenous in both efficacy of binding and divergence 
+relative to the inspiration hits.
+Several highly divergent compounds in the set bind in a completely different manner to the inspiration hits.
+Several compounds were inspired by x0434, which is poses a mapping problem as it is near symmetric.
+In fact, as the plot is done without any massaging bar for the inspiration cleanup discussed in 
+[Fragmenstein docs](https://github.com/matteoferla/Fragmenstein/blob/master/documentation/notes/manual_filtering.md).
+As a result there are ostensibly 4 hits which are incorrect by 6+ Å in the Fragmenstein placement,
+because the followup was interpreted the wrong way round.
 
 ## Color names
 The colours at present are the divergent colo(u)r of Fragmenstein as found in `fragmenstein.branding.divergent_colors`.
