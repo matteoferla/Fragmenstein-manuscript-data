@@ -194,3 +194,60 @@ fig.write_image("free.png")
 fig.write_image("free.svg")
 fig
 ```
+
+### Odd ones
+
+JOR-UNI-2fc98d0b-12 (88% overlap) gets mapped incorrectly:
+
+![JOR-UNI-2fc98d0b-12](snaps/JOR-UNI-2fc98d0b-12.png)
+
+The compound is a triskelion of three rings, cyclo-hexane, pyridine and chlorobenzene.
+Fragmenstein maps the pyridine with the pyridine of x0434 as I believe was the submitter's intention.
+In effect this is binding unexpectedly.
+
+MAK-UNK-6435e6c2-4 (97%) is a covalant, but the warhead was not picked up as its SMILES was submitted
+without it.
+Namely it should have been `*CC(=O)Nc1cccc(N2CCCC2=O)c1` —or `[Cl]CC(=O)Nc1cccc(N2CCCC2=O)c1` and
+flagged as covalent.
+![MAK-UNK-6435e6c2-4](snaps/MAK-UNK-6435e6c2-4.png)
+
+ANN-UNI-26382800-5 (100%) is an interesting case as Fragmenstein maps as I would have expected,
+but the ligand crystallised differently.
+
+![ANN-UNI-26382800-5](snaps/ANN-UNI-26382800-5.png)
+
+
+DAR-DIA-23aa0b97-20 (85%) gets mapped as expected, but crystallised at a different orientation.
+A thing to note is that the ∆∆G of the Fragmenstein placement is only -0.6 kcal/mol, so
+a scraping pass.
+
+![DAR-DIA-23aa0b97-20](snaps/DAR-DIA-23aa0b97-20.png)
+
+TRY-UNI-714a760b-19 (85%) has a novel bit (actually not, but x1382 was not declared as inspired),
+that gets placed wrong.
+
+![TRY-UNI-714a760b-19](snaps/TRY-UNI-714a760b-19.png)
+
+BAR-COM-4e090d3a-49 (<80%) adds a new bit and changes one ring into another again on x0434.
+
+![BAR-COM-4e090d3a-49](snaps/BAR-COM-4e090d3a-49.png)
+
+BAR-COM-4e090d3a-47 (<80%) is a triskelion and Fragmenstein maps as I would have expected,
+but it bound differently.
+
+![BAR-COM-4e090d3a-47](snaps/BAR-COM-4e090d3a-47.png)
+
+TRY-UNI-2eddb1ff-2 (<80%) is another case of weird unexpected binding from a bizarre inspiration set.
+
+![TRY-UNI-2eddb1ff-2](snaps/TRY-UNI-2eddb1ff-2.png)
+
+etc. etc.
+
+Looking at these compounds it is clear that the user's intentions were cryptic in some cases,
+or the followup bound differently. This is expected and a compound that binds differently is
+likely a worse binder, especially due to strain as DAR-DIA-23aa0b97-20 shows.
+The dataset is very dirty and in some cases the compounds were generated via some algorithm,
+such as BRICS decomposition (which is agnostic of original connectivity), yielding compounds
+that are unlikely to map as expected.
+In other words, I was hoping to go through the top outliers and map them semi-manually
+to re-iterate the user interaction aspect, but I couldn't make sense of the suggestions.

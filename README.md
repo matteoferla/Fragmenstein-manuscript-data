@@ -76,6 +76,8 @@ In fact, as the plot is done without any massaging bar for the inspiration clean
 As a result there are ostensibly 4 hits which are incorrect by 6+ Å in the Fragmenstein placement,
 because the followup was interpreted the wrong way round.
 
+
+
 ## Footnote: consistent color names
 The colours at present are the divergent colo(u)r of Fragmenstein as found in `fragmenstein.branding.divergent_colors`.
 The primary colour is <span style="color:#AED882;">#AED882, feijoa</span>, but I'll call it green.
