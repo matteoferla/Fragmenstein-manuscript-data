@@ -40,17 +40,18 @@ as it would otherwise impede the mapping of the second hit (PCM0102716) due to t
 the NU181 hydroxyl to the oxygen of the acryloyl warhead of PCM0102716 
 rather than to the carbon bonded the benzene ring in PCM0102716.
 
-But there appear to be two chiralities: `NU443` is 2S-pyrrolidine and `NU442` is 2R-pyrrolidine.
-The latter, were it reacted would be `'*CC(=O)N1CCC[C@@H]1c1cccc(CC(=O)Nc2cccc(Cl)c2)c1'`.
-
-The latter scores 1.1 kcal/mol higher (–9.2 kcal/mol) than the former (–10.3 kcal/mol)
-and the SG atom in NU443 is only .3 Å away from where it is in PCM-0102716,
-while in NU442 it is .9 Å away.
-but this is far from a smoking gun to explain why it did not react.
-The RMSD against the hits went from 0.6 Å to 0.9 Å.
-
 **Figure S2.** Placement of 442.
-![xxx](this_file_does_not_exist.png)
+![NUDT7](NUDT7_NU442.png)
+Placed crosslinked NU442 (green), overlaid with crystal structures of NU443 (reacted, blue)
+and NU442 (unreacted, red).
+Two enantiomers of the reactive acryloyl followup had been tested by xx et al.
+`NU443` has a 2S-pyrrolidine ring and `NU442` has a 2R-pyrrolidine.
+The latter, were it reacted, would be `'*CC(=O)N1CCC[C@@H]1c1cccc(CC(=O)Nc2cccc(Cl)c2)c1'`.
+The placed reacted NU442 scores 1.1 kcal/mol higher (–9.2 kcal/mol) than the reacted NU443 (–10.3 kcal/mol)
+and the SG atom in NU443 is only .3 Å away from where it is in PCM-0102716,
+while in NU442 it is .9 Å away. Additionally, the RMSD against the hits went from 0.6 Å to 0.9 Å.
+This indicates that this enantiomer is more strained, which appears to be a sufficiently 
+large enough obstacle to reactivity that it was detected in the non-reacted form.
 
 ## Moonshot placement
 
