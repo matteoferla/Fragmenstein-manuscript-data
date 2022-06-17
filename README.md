@@ -13,10 +13,17 @@ For Fragmenstein itself see [repo](https://github.com/matteoferla/Fragmenstein).
 > See TBA
 > 
 **Figure 1.** Merging effects based on position.
-![xxx](this_file_does_not_exist.png)
+![walton](walton-01.jpg)
+Workings of Fragmenstein. The molecular "stitching" operations are 
+done by the class Monster, which relies on various artifices to work.
+A) Translating a superposed furan and benzene by different amounts,
+yields different combinations (image shown without minimization).
+B) Merging of two superposed molecules is done by collapsing rings and then expanding the merger,
+in order to prevent unnecessary distortions. When two atoms occupy the same 2 Å space they are merged.
+C) ...
 
 **Figure S1.** Example merger with purchasability issue
-![xxx](this_file_does_not_exist.png)
+![merger_issue.jpg](merger_issue.jpg)
 
 ### NUDT7
 > See [NUDT7 notes](NUDT7/README.md).
