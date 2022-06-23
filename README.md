@@ -49,8 +49,9 @@ rather than to the carbon bonded the benzene ring in PCM0102716.
 
 **Figure S2.** Placement of 442.
 ![NUDT7](NUDT7_NU442.png)
-Placed crosslinked NU442 (green), overlaid with crystal structures of NU443 (reacted, blue)
-and NU442 (unreacted, red).
+_Placed crosslinked NU442 (green), overlaid with crystal structures of NU443 (reacted, blue)
+and NU442 (unreacted, red)._
+
 Two enantiomers of the reactive acryloyl followup had been tested by xx et al.
 `NU443` has a 2S-pyrrolidine ring and `NU442` has a 2R-pyrrolidine.
 The latter, were it reacted, would be `'*CC(=O)N1CCC[C@@H]1c1cccc(CC(=O)Nc2cccc(Cl)c2)c1'`.
