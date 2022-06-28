@@ -61,6 +61,12 @@ while in NU442 it is .9 Å away. Additionally, the RMSD against the hits went fr
 This indicates that this enantiomer is more strained, which appears to be a sufficiently 
 large enough obstacle to reactivity that it was detected in the non-reacted form.
 
+**Figure S3.** Placement of bold4 (tubulin)
+![tubulin](tubulin_bold4.png)
+In https://pubmed.ncbi.nlm.nih.gov/35404502/ is a merger wherein a ring is flipped
+and without user intervention it does not map correctly.
+
+
 ## Moonshot placement
 
 > See [moonshot notes](moonshot/README.md).
