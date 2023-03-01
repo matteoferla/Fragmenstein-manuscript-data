@@ -12,17 +12,23 @@ the [Diamond XChem site](https://www.diamond.ac.uk/Instruments/Mx/Fragment-Scree
 and in [the paper](http://pubs.rsc.org/is/content/articlelanding/2016/sc/c5sc03115j).
 
 This libary contains small fragments that are tailored for expansion.
+(Any XChem id repetition is coincidental as these are different projects).
 
+#### Mac1
 The following Mac1 hits are derived from that library:
 
 x0091, x0104, x0128, x0142, x0158, x0159, x0173, x0216, x0228, x0253, x0259, x0282, x0299, x0301, x0334, x0371, x0421, x0423, x0436, x0438, x0465, x0469, x0471, x0496, x0516, x0524, x0548, x0548, x0574, x0587, x0591, x0592, x0598, x0600, x0626, x0628, x0655, x0676, x0681, x0685, x0689, x0711, x0722, x0727
 
+#### MPro1
 While in MPro these are:
 
 x0072, x0104, x0107, x0161, x0165, x0177, x0194, x0195, x0305, x0336, x0354, x0376, x0387, x0390, x0397, x0398, x0425, x0426, x0434, x0464, x0478, x0499, x0540, x0669, x0678, x1077, x1086, x1119, x1132, x1163, x1187, x1226, x1237, x1249
 
-(Any XChem id repetition is coincidental as these are different projects).
+#### NUDT7
 
+...
+
+#### Code
 Here is the code for the filtering:
 
 ```python
@@ -177,32 +183,55 @@ for target, package in [('mac1_poised', Mac1), ('mpro_poised', MPro)]:
 print('All Done')
 ```
 
+### Faux Victor
+
+In the submodule `fragalysis.faux_victors` there are Victor alternatives.
+With the potential exception of ``Wictor`` (Victor without pyrosetta, i.e. no energy minimization),
+the classes ``Mictor`` (Victor with MCSMerger, i.e. no positional info used)
+and ``AccountableBRICS`` (nt a Victor, but generates a BRICS decomposition of the hits and returns a dataframe
+    with the built molecules usable in ``Laboratory.place``)
+are not intended to be used beyond this experiment.
+
+The faux Monster ``MCSMerger`` combines molecules by MCS.
+They will get rectified. The first molecule is the source of the contraints for Igor:
+the second molecules would otherwise make the merger non-minimisable.
+
+The ``AccountableBRICS`` preparatiory class for ``Laboratory.place``,
+merges the compounds by BRICS decomposition but keeps the identity of the hits (hence its name ``Accountable``)
+by storing it in the isotopes of the atoms.
+
+```python
+import pandas as pd
+from fragmenstein import Laboratory
+from fragmenstein.faux_victors import Mictor
+lab = Laboratory(pdbblock=pdbblock, covalent_resi=None)
+lab.Victor = Mictor
+combinations: pd.DataFrame = lab.combine(hits, n_cores=28)
+combinations.to_pickle(f'Mac1_mcs_combinations.p')
+# ------------------------
+from fragmenstein.faux_victors import AccountableBRICS
+decomposer = AccountableBRICS(hits)
+results: pd.DataFrame = decomposer(cutoff=decomposer.median, max_mergers=10_000)
+print(decomposer.info)
+results['hitz'] = results.hits
+# keep only first
+results['hits'] = results.hits.apply(lambda hits: [hits[0]])
+lab = Laboratory(pdbblock=Mac1.get_template(), covalent_resi=None)
+placements:pd.DataFrame = lab.place(results, expand_isomers=False, n_cores=28)
+print(placements.to_pickle(f'Mac1_brics_combinations.p'))
+```
+
 ### Analysis
 
 ```python
-import os
+import os, json
 import plotly.express as px
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from typing import List, Optional, Any, Union
-from typing import List, Optional, Any, Dict, Union
-import requests, os
-
-# ---------------------------------------
-
-def get_combinations(filename):
-    """
-    Load the table in filenam and clean up the smiles.
-    """
-    combinations = pd.read_pickle(filename)
-    combinations['clean_smiles'] = combinations.minimized_mol.apply(clean_up).to_list()
-    return combinations
 
 def clean_up(mol: Union[Chem.Mol, None]) -> str:
-    """
-    No to Hs and @@!
-    """
     if not isinstance(mol, Chem.Mol):
         return ''
     mol = AllChem.RemoveAllHs(mol)
@@ -210,120 +239,133 @@ def clean_up(mol: Union[Chem.Mol, None]) -> str:
         Chem.RemoveStereochemistry(mol)
         AllChem.SanitizeMol(mol)
         return Chem.MolToSmiles(mol)
-    except:
+    except KeyboardInterrupt as key:
+        raise key
+    except Exception as error:
+        if isinstance(error, KeyboardInterrupt):
+            raise KeyboardInterrupt
         return ''
 
-# ---------------------------------------
-
-class SinglePostera:
-    """
-    The Posera SDK by Rubén does a lot more,
-    this is a simple one aimed at pandas.
-    It does log the queries...
-    
-    """
-    # https://api.postera.ai/api/v1/docs/#operation/api_v1_post
-    def __init__(self, **options):
-        self.options = options
-        self.responses = []
-
-    def _post(self, url: str, data: Dict[str, Union[str, float, int]]) -> dict:
-        if 'smiles' not in data:
-            raise ValueError('no smiles?')
-        if not data['smiles'] or not isinstance(data['smiles'], str):
-            return {}
-        headers = {'X-API-KEY': os.environ["MANIFOLD_API_KEY"]}
-        response: requests.Response = requests.post(url, headers=headers, json=data)
-        if not response.ok:  # error tolerant
-            print(data, response.status_code, response.text)
-            return {}
-        response_json = response.json()
-        results: dict = response_json['results'] if 'results' in response_json else response_json
-        self.responses.append((url, data, results))
-        return results
-
-    def retrosynthesis(self, smiles) -> dict:
-        return self._post('https://api.postera.ai/api/v1/synthetic-accessibility/retrosynthesis/',
-                          {'smiles': smiles, **self.options})
-
-    def similarity(self, smiles) -> dict:
-        return self._post('https://api.postera.ai/api/v1/similarity/', 
-                          {'smiles': smiles, **self.options})
-
-    def fast(self, smiles) -> dict:
-        return self._post('https://api.postera.ai/api/v1/synthetic-accessibility/fast-score/', 
-                          {'smiles': smiles, **self.options})
-    
-def extract_vendors(data: List[Dict[str, Any]], flat=False) \
-                    -> Union[Dict[str, Dict[str, Union[str, float]]], Dict[str, Any]]:
-    # per compound
-    vendored = {}
-
-    for mol_info in data:
-        for catalogue in mol_info['catalogEntries']:
-            if catalogue['catalogName'] in vendored:
-                continue
-            vendored[catalogue['catalogName']] = dict(similarity=mol_info['similarity'],
-                                                      smiles=mol_info['smiles'],
-                                                      name=catalogue['catalogId'])
-    if not flat:
-        return vendored
-    return flatten_vendors(vendored)
-
-
-def flatten_vendors(data: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
-    return {f'{vendor}::{k}': v for vendor in data for k, v in data[vendor].items()}
+def get_combinations(filename):
+    combinations = pd.read_pickle(filename)
+    combinations['clean_smiles'] = combinations.minimized_mol.apply(clean_up).to_list()
+    return combinations
 ```
 
 Getting the data:
 
 ```python
+import pandas as pd
+import pandera.typing as pdt
+from typing import List, Optional, Any, Dict, Union
+import requests, os
+
+# -----------------------------------------------
+
 combinations = pd.DataFrame()
-for target in ('MPro', 'Mac1'):
+for target in ('MPro', 'Mac1', 'NUDT7', 'Mac1-MCS', 'Mac1-BRICS'):
     path = f'{target}_poised_combinations.p'.lower()
-    c: pd.DataFrame = get_combinations(path)
+    c: pd.DataFrame = get_combinations(path)  # noqa previous cell
     c['target'] = target
     combinations = pd.concat([combinations, c], ignore_index=True)
+    
+# -----------------------------------------------
+    
+combinations['LE'] = combinations['∆∆G'] / combinations['minimized_mol'].apply(lambda mol: float('nan') if mol is None else mol.GetNumHeavyAtoms())
+combinations.loc[(combinations.outcome == 'acceptable') & (combinations.LE > -0.1), 'outcome'] = 'weak binding'
+
+# -----------------------------------------------
+import json, gzip, pickle
+from postera import SinglePostera
+
+p = SinglePostera()
+# with gzip.open('responses.pkl.gz', 'rb') as fh:
+#     p.responses+= pickle.load(r, fh)
+sa = combinations.clean_smiles.apply(p.sa_retro)
+#sa = combinations.clean_smiles.apply(lambda s: p.dejavu('https://api.postera.ai/api/v1/synthetic-accessibility/retrosynthesis/', {'smiles': s}))
+import operator
+nan = float('nan')
+sa = sa.apply(lambda v: v if isinstance(v, dict) else {'score': nan, 'minNumSteps': nan})
+
+combinations['postera_SAScore'] = sa.apply(operator.itemgetter('score'))
+combinations['postera_minNumSteps'] = sa.apply(operator.itemgetter('minNumSteps'))
+
+# -----------------------------------------------
+
+from rdkit.Chem.QED import qed
+
+def safe_qed(mol):
+    if isinstance(mol, Chem.Mol):
+        return qed(mol)
+    return float('nan')
+
+combinations['QED'] = combinations.minimized_mol.apply(safe_qed)
+
+# -----------------------------------------------
+
+pd.pivot_table(combinations, index='target', values='outcome', aggfunc=len)
 ```
+
+| target     |   outcome |
+|:-----------|----------:|
+| MPro       |      1122 |
+| Mac1       |      1892 |
+| Mac1-BRICS |     10000 |
+| Mac1-MCS   |      1892 |
+| NUDT7      |       600 |
+
 Seeing the outcomes:
 ```python
-px.histogram(combinations.reset_index(), x='outcome', 
+fig = px.histogram(combinations.reset_index(), x='outcome', 
              color='target', barmode='group',
              title=f'Combination outcome of DSi-Poised hits')
+fig.update_traces(texttemplate='%{y}', textposition='outside')
+fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+
+fig
 ```
-![outcomes](benchmarking/labelled_outcomes.png)
+![outcomes](benchmarking/benchmark_outcome_whole.png)
+
+This is rather hard to read as the number for each target differ.
+
+```python
+#%%script false --no-raise-error
+# pointless long version of above for normalisation to %
+tally = combinations.target.value_counts().to_dict()
+
+pivoted = pd.pivot_table(combinations, values='name', index='outcome', columns='target', aggfunc='count').fillna(0).astype(int)
+targets = ('MPro', 'Mac1', 'NUDT7', 'Mac1-MCS', 'Mac1-BRICS')
+_ = [pd.DataFrame(dict(counts=pivoted[target] / tally[target] * 100, target=target)) for target in targets]
+flattened = pd.concat(_)\
+              .fillna(0).astype({'counts': int, 'target': str})
+fig = px.bar(flattened.reset_index(), x='outcome', y='counts',
+             color='target', barmode='group',
+             title=f'Combination outcome of DSi-Poised hits')
+fig.update_traces(texttemplate='%{y}', textposition='outside')
+fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide', yaxis=dict(title='Fraction [%]'))
+fig.update_layout(template="plotly_white",)
+fig.write_image('benchmark_outcome.png')
+fig
+```
+![outcomes](benchmarking/benchmark_outcome.png)
 
 The errors are from the rectification or parameterisation:
 
 ```python
-combinations.loc[combinations.outcome == 'crashed'].error.to_list()
-```
 
-    [,
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     "KekulizeException: Can't kekulize mol.  Unkekulized atoms: 3 8 12 13 14",
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'AtomValenceException: Explicit valence for atom # 1 C, 5, is greater than permitted',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     "KekulizeException: Can't kekulize mol.  Unkekulized atoms: 14 15 18 20 21",
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'ValueError: Bad Conformer Id',
-     "KekulizeException: Can't kekulize mol.  Unkekulized atoms: 3 4 6 9 10",
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     'RuntimeError: No sub-structure match found between the probe and query mol',
-     "KekulizeException: Can't kekulize mol.  Unkekulized atoms: 8 9 11",
-     'RuntimeError: No sub-structure match found between the probe and query mol']
-     
- `RuntimeError` happens after the run,
- wherein the bond order fails to be restored. 
- 
- While the rest are rectifier errors.
+combinations['error_family'] = combinations.error.apply(Laboratory.error_classify)
+combinations['error_family'].value_counts()
+```
+|                               |   error_family |
+|:------------------------------|---------------:|
+| success                       |          12519 |
+| distance                      |           2504 |
+| incorrect rectification #3    |            163 |
+| embedding error               |            142 |
+| timeout                       |            130 |
+| incorrect rectification #2    |             22 |
+| incorrect parameterisation #1 |             18 |
+| incorrect rectification #4    |              3 |
+| incorrect parameterisation #5 |              3 |
+| incorrect rectification #1    |              1 |
+| incorrect parameterisation #3 |              1 |
