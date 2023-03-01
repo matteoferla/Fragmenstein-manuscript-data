@@ -10,8 +10,7 @@ For Fragmenstein itself see [repo](https://github.com/matteoferla/Fragmenstein).
 
 
 ### Placement of examples
-> See TBA
-> 
+
 **Figure 1.** Merging effects based on position.
 ![walton](walton-01.jpg)
 Workings of Fragmenstein. The molecular "stitching" operations are 
@@ -21,6 +20,8 @@ yields different combinations (image shown without minimization).
 B) Merging of two superposed molecules is done by collapsing rings and then expanding the merger,
 in order to prevent unnecessary distortions. When two atoms occupy the same 2 Å space they are merged.
 C) ...
+
+**Figure 2.** Benchmarking of mergers
 
 **Figure S1.** Example merger with purchasability issue
 ![merger_issue.jpg](merger_issue.jpg)
