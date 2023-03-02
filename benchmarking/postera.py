@@ -1,9 +1,5 @@
-import requests, os, json, gzip
-import plotly.express as px
-import pandas as pd
-from rdkit import Chem
-from rdkit.Chem import AllChem
-from typing import List, Dict, Optional, Any, Union
+import requests, os, json, gzip, pickle
+from typing import List, Dict, Any, Union, Tuple
 
 class SinglePostera:
     """
