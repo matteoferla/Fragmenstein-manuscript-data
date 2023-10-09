@@ -1,7 +1,7 @@
 ## Moonshot
 
 The manual filtering of the moonshot data is described
-[here](https://github.com/matteoferla/Fragmenstein/blob/master/documentation/notes/manual_filtering.md).
+[here](manual_filtering.md).
 
 The submission system for the Moonshot project was not congenial for this analysis 
 as a user submitted a group of suggested compounds and the hits that inspired them not in an itemised fashion.
